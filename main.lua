@@ -13,9 +13,11 @@ GAME_WINDOW_MODE_FLAGS = {
 ]]
 
 function love.load()
-    love.window.setMode(WINDOW_WIDTH,
-    WINDOW_HEIGHT,
-    GAME_WINDOW_MODE_FLAGS)
+    love.window.setMode(
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT,
+        GAME_WINDOW_MODE_FLAGS
+    )
 end
 
 function love.draw()
