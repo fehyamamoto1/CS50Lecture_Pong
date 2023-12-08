@@ -14,6 +14,15 @@ GAME_WINDOW_MODE_FLAGS = {
 VIRTUAL_WIDTH = 432
 VIRTUAL_HEIGHT = 243
 
+-- Padle size and style
+PADDLE_WIDTH = 5
+PADDLE_HEIGHT = 20
+PADDLE_STYLE = 'fill'
+
+-- Ball size and style
+BALL_SIZE = 4
+BALL_STYLE = 'fill'
+
 --[[ 
     Initialization function. 
     This will be runned once when the game first loads.
@@ -58,6 +67,15 @@ function love.draw()
 
     -- draw welcome text toward the top of the screen
     love.graphics.printf('Hello Pong!', 0, 20, VIRTUAL_WIDTH, 'center')
+
+    -- render left side paddle
+    love.graphics.rectangle(PADDLE_STYLE, 10, 30, PADDLE_WIDTH, PADDLE_HEIGHT)
+
+    -- render right side paddle
+    love.graphics.rectangle(PADDLE_STYLE, VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 50, PADDLE_WIDTH, PADDLE_HEIGHT)
+
+    -- render ball 
+    love.graphics.rectangle(BALL_STYLE, VIRTUAL_WIDTH / 2 - BALL_SIZE / 2, VIRTUAL_HEIGHT / 2 - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE)
 
     -- end rendering at virtual resolution
     push:apply('end')
