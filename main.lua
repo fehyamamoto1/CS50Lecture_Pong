@@ -20,11 +20,15 @@ VIRTUAL_HEIGHT = 243
 ]]
 function love.load()
     -- use nearest-neighbor filtering on upscaling and downscaling to prevent blur
-    love.graphics.setDefaultFilter(
-        'nearest',
-        'nearest'
-    )
+    love.graphics.setDefaultFilter('nearest', 'nearest')
+    
+    -- retro-looking font 
+    smallFont = love.graphics.newFont('fonts/font.ttf', 8);
 
+    -- set game font to desired retro-looking font
+    love.graphics.setFont(smallFont)
+
+    -- initialize window with virtual resolution
     push:setupScreen(
         VIRTUAL_WIDTH,
         VIRTUAL_HEIGHT,
@@ -49,15 +53,13 @@ function love.draw()
     -- begin rendering at virtual resolution
     push:apply('start')
 
-    -- using virtual height and width for text placement
-    love.graphics.printf(
-        "Hello Pong!",          -- text to render
-        0,                      -- starting X (it will be centralized so beginning from the center, X = 0)
-        VIRTUAL_HEIGHT / 2 - 6,  -- starting Y (halfway down the screen minus half of the default font size in this case)
-        VIRTUAL_WIDTH,           -- number of pixels to center within (read: center in a resolution with a width of WINDOWS_WIDTH pixels)
-        "center"                -- alignment mode: 'center', 'left', 'right'
-    )
+    -- clear screen with specific color
+    love.graphics.clear(167/255, 40/255, 145/255, 255/255)
 
+    -- draw welcome text toward the top of the screen
+    love.graphics.printf('Hello Pong!', 0, 20, VIRTUAL_WIDTH, 'center')
+
+    -- end rendering at virtual resolution
     push:apply('end')
 end
 
