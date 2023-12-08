@@ -39,9 +39,6 @@ function love.load()
     -- larger font for drawing scores
     scoreFont = love.graphics.newFont('fonts/font.ttf', 32)
 
-    -- set game font to desired retro-looking font
-    love.graphics.setFont(smallFont)
-
     -- initialize window with virtual resolution
     push:setupScreen(
         VIRTUAL_WIDTH,
@@ -50,6 +47,10 @@ function love.load()
         WINDOW_HEIGHT,
         GAME_WINDOW_MODE_FLAGS
     )
+
+    -- player scores
+    player1_Score = 0
+    player2_Score = 0
 
     -- paddle positions in Y axis 
     player1_Y = 30
@@ -98,8 +99,18 @@ function love.draw()
     -- clear screen with specific color
     love.graphics.clear(167/255, 40/255, 145/255, 255/255)
 
+    -- set game font to desired retro-looking font
+    love.graphics.setFont(smallFont)
+
     -- draw welcome text toward the top of the screen
     love.graphics.printf('Hello Pong!', 0, 20, VIRTUAL_WIDTH, 'center')
+
+    -- draw player scores
+    love.graphics.setFont(scoreFont)
+    love.graphics.print(tostring(player1_Score), VIRTUAL_WIDTH / 2 - 50, 
+        VIRTUAL_HEIGHT / 3)
+    love.graphics.print(tostring(player2_Score), VIRTUAL_WIDTH / 2 + 30,
+        VIRTUAL_HEIGHT / 3)
 
     -- render left side paddle
     love.graphics.rectangle(PADDLE_STYLE, 10, player1_Y, PADDLE_WIDTH, PADDLE_HEIGHT)
