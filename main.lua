@@ -18,6 +18,8 @@ VIRTUAL_HEIGHT = 243
 PADDLE_WIDTH = 5
 PADDLE_HEIGHT = 20
 PADDLE_STYLE = 'fill'
+-- speed at which we will move our paddle; multiplied by dt in update
+PADDLE_SPEED = 200
 
 -- Ball size and style
 BALL_SIZE = 4
@@ -31,8 +33,11 @@ function love.load()
     -- use nearest-neighbor filtering on upscaling and downscaling to prevent blur
     love.graphics.setDefaultFilter('nearest', 'nearest')
     
-    -- retro-looking font 
+    -- retro-looking font used in any text
     smallFont = love.graphics.newFont('fonts/font.ttf', 8);
+
+    -- larger font for drawing scores
+    scoreFont = love.graphics.newFont('fonts/font.ttf', 32)
 
     -- set game font to desired retro-looking font
     love.graphics.setFont(smallFont)
@@ -45,7 +50,35 @@ function love.load()
         WINDOW_HEIGHT,
         GAME_WINDOW_MODE_FLAGS
     )
+
+    -- paddle positions in Y axis 
+    player1_Y = 30
+    player2_Y = VIRTUAL_HEIGHT - 50
 end
+
+--[[
+    Runs every frame, with "dt" passed in, delta in seconds
+    since the last frame, which LOVE supplies
+]]
+function love.update(dt)
+    -- player 1 movement
+    if love.keyboard.isDown('w') then
+        -- add negative paddle speed to current Y scaled by dt, moves up
+        player1_Y = player1_Y + -PADDLE_SPEED * dt
+    elseif love.keyboard.isDown('s') then
+        -- add positive paddle speed to current Y scaled by dt, moves down
+        player1_Y = player1_Y + PADDLE_SPEED * dt
+    end
+
+    -- player 2 movement
+    if love.keyboard.isDown('up') then
+        -- add negative paddle speed to current y scaled by dt, moves up 
+        player2_Y = player2_Y + -PADDLE_SPEED * dt
+    elseif love.keyboard.isDown('down') then
+        player2_Y = player2_Y + PADDLE_SPEED * dt
+    end
+end
+
 
 --[[
     LOVE2D will call this function every frame
@@ -69,10 +102,10 @@ function love.draw()
     love.graphics.printf('Hello Pong!', 0, 20, VIRTUAL_WIDTH, 'center')
 
     -- render left side paddle
-    love.graphics.rectangle(PADDLE_STYLE, 10, 30, PADDLE_WIDTH, PADDLE_HEIGHT)
+    love.graphics.rectangle(PADDLE_STYLE, 10, player1_Y, PADDLE_WIDTH, PADDLE_HEIGHT)
 
     -- render right side paddle
-    love.graphics.rectangle(PADDLE_STYLE, VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 50, PADDLE_WIDTH, PADDLE_HEIGHT)
+    love.graphics.rectangle(PADDLE_STYLE, VIRTUAL_WIDTH - 10, player2_Y, PADDLE_WIDTH, PADDLE_HEIGHT)
 
     -- render ball 
     love.graphics.rectangle(BALL_STYLE, VIRTUAL_WIDTH / 2 - BALL_SIZE / 2, VIRTUAL_HEIGHT / 2 - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE)
@@ -80,4 +113,3 @@ function love.draw()
     -- end rendering at virtual resolution
     push:apply('end')
 end
-
