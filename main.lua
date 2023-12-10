@@ -32,7 +32,11 @@ BALL_STYLE = 'fill'
 function love.load()
     -- use nearest-neighbor filtering on upscaling and downscaling to prevent blur
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    
+
+    -- "seed" the RNG so that calls to random are always random
+    -- use the current time, since that will vary on startup every time
+    math.randomseed(os.time())
+
     -- retro-looking font used in any text
     smallFont = love.graphics.newFont('fonts/font.ttf', 8);
 
@@ -55,6 +59,14 @@ function love.load()
     -- paddle positions in Y axis 
     player1_Y = 30
     player2_Y = VIRTUAL_HEIGHT - 50
+
+    -- initial position for the ball 
+    ball_X = VIRTUAL_WIDTH / 2 - BALL_SIZE / 2
+    ball_Y = VIRTUAL_HEIGHT / 2 - BALL_SIZE / 2
+
+    -- ball vectorial speeds 
+    ball_DX = math.random(2) == 1 and 100 or -100 
+    ball_DY = math.random(-50, 50)
 end
 
 --[[
@@ -78,6 +90,10 @@ function love.update(dt)
     elseif love.keyboard.isDown('down') then
         player2_Y = player2_Y + PADDLE_SPEED * dt
     end
+
+    -- ball movement
+    ball_X = ball_X + ball_DX * dt
+    ball_Y = ball_Y + ball_DY * dt
 end
 
 
@@ -119,7 +135,7 @@ function love.draw()
     love.graphics.rectangle(PADDLE_STYLE, VIRTUAL_WIDTH - 10, player2_Y, PADDLE_WIDTH, PADDLE_HEIGHT)
 
     -- render ball 
-    love.graphics.rectangle(BALL_STYLE, VIRTUAL_WIDTH / 2 - BALL_SIZE / 2, VIRTUAL_HEIGHT / 2 - BALL_SIZE / 2, BALL_SIZE, BALL_SIZE)
+    love.graphics.rectangle(BALL_STYLE, ball_X, ball_Y, BALL_SIZE, BALL_SIZE)
 
     -- end rendering at virtual resolution
     push:apply('end')
