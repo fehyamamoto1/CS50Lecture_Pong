@@ -67,6 +67,9 @@ function love.load()
     -- ball vectorial speeds 
     ball_DX = math.random(2) == 1 and 100 or -100 
     ball_DY = math.random(-50, 50)
+
+    -- initial game state
+    gameState = 'start'
 end
 
 --[[
@@ -92,8 +95,11 @@ function love.update(dt)
     end
 
     -- ball movement
-    ball_X = ball_X + ball_DX * dt
-    ball_Y = ball_Y + ball_DY * dt
+    -- will only move when game begins
+    if gameState == 'playing' then
+        ball_X = ball_X + ball_DX * dt
+        ball_Y = ball_Y + ball_DY * dt
+    end
 end
 
 
@@ -103,8 +109,11 @@ end
 ]]
 function love.keypressed(key)
     -- keys can be accessed via string name
+    -- quit game when esc key is pressed 
     if key == 'escape' then
         love.event.quit()
+    elseif key == 'enter' or key == 'return' then
+        gameState = 'playing'
     end
 end
 
