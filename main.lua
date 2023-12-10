@@ -77,10 +77,10 @@ function love.update(dt)
     -- player 1 movement
     if love.keyboard.isDown('w') then
         -- add negative paddle speed to current Y scaled by dt, moves up
-        player1_Y = player1_Y + -PADDLE_SPEED * dt
+        player1_Y = math.max(0, player1_Y + -PADDLE_SPEED * dt)
     elseif love.keyboard.isDown('s') then
         -- add positive paddle speed to current Y scaled by dt, moves down
-        player1_Y = player1_Y + PADDLE_SPEED * dt
+        player1_Y = math.min(VIRTUAL_HEIGHT - PADDLE_HEIGHT, player1_Y + PADDLE_SPEED * dt)
     end
 
     -- player 2 movement
