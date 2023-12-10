@@ -113,7 +113,20 @@ function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
     elseif key == 'enter' or key == 'return' then
-        gameState = 'playing'
+        if gameState == 'start' then
+            gameState = 'playing'
+        else
+            -- in case game was already running 
+            gameState = 'start'
+
+            -- reset the ball to the initial position 
+            ball_X = VIRTUAL_WIDTH / 2 - BALL_SIZE / 2
+            ball_Y = VIRTUAL_HEIGHT / 2 - BALL_SIZE / 2
+            
+            -- redefine ball vectorial speeds
+            ball_DX = math.random(2) == 1 and 100 or -100 
+            ball_DY = math.random(-50, 50)
+        end 
     end
 end
 
