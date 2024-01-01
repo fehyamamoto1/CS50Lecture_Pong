@@ -73,6 +73,16 @@ function love.load()
         Use nearest-neighbor filtering on upscaling and downscaling to prevent blur
     ]]
     love.graphics.setDefaultFilter('nearest', 'nearest')
+
+    --[[
+        PT-BR;
+        Define o título da janela da aplicação
+
+        EN;
+        set the title of our application window
+    ]]
+    love.window.setTitle("Pong")
+
     --[[ 
         PT-BR;
         Utilização de seed para que o RNG seja artificialmente aleatório
@@ -302,6 +312,14 @@ function love.draw()
     -- render ball 
     ball:render()
 
+    displayFPS()
+
     -- end rendering at virtual resolution
     push:apply('end')
+end
+
+function displayFPS()
+    love.graphics.setFont(smallFont)
+    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
 end
