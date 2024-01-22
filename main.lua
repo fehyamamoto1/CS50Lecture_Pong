@@ -157,8 +157,25 @@ end
 ]]
 function love.update(dt)
     if gameState == 'playing' then
+
+        --[[
+            PT-BR;
+            Checagem se a bola colidiu com a raquete do jogador.
+            Caso a colisão seja detectado, acelera o vetor de velocidade dx em 3%
+            verifica se o vetor velocidade dy é para cima (negativo)
+            ou para baixo (positivo), mantendo a direção (momentum).
+            Válido para ambos os jogadores.
+
+            EN-US;
+            Check if ball colided with the player.
+            In case collision was detected, speed up velocity in dx
+            also verifies if vector dy is pointing up (negative) or
+            poiting down (positive), to maintain it's momentum.
+            It's valid for both players.
+        ]]
         if ball:collides(player1) then
             ball.dx = -ball.dx * 1.03
+            ball.x = ball.x + BALL_SIZE
 
             if ball.dy < 0 then
                 ball.dy = -math.random(10, 150)
@@ -169,6 +186,7 @@ function love.update(dt)
 
         if ball:collides(player2) then
             ball.dx = -ball.dx * 1.03
+            ball.x = ball.x - BALL_SIZE
 
             if ball.dy < 0 then
                 ball.dy = -math.random(10.150)
@@ -177,15 +195,47 @@ function love.update(dt)
             end
         end
 
+        --[[
+            PT-BR;
+            Verifica colisão com a parte superior da tela.
+            Caso o y seja menor ou igual a zero, redefine para 0 e inverte o vetor dy.
+
+            EN-US;
+            Verifies collision with top side of screen.
+            In case y is lesser than or equals zero, redefines to 0 and inverts vector dy.
+        ]]
         if ball.y <= 0 then
             ball.y = 0
             ball.dy = -ball.dy
         end
+        
+        --[[
+            PT-BR;
+            Verifica colisão com a parte inferior da tela.
+            Caso o y seja maior que a altura total da tela - o tamanho da bola, redefine para este
+            valor e inverte o vetor dy.
 
-        if ball.y >= VIRTUAL_HEIGHT - 4 then
-            ball . y = VIRTUAL_HEIGHT - 4
+            EN-US;
+            Verifies collision with bottom side of screen.
+            In case y is greater than total height - ball size, redefines to this value and inverts 
+            vector dy.
+        ]]
+        if ball.y >= VIRTUAL_HEIGHT - BALL_SIZE then
+            ball . y = VIRTUAL_HEIGHT - BALL_SIZE
             ball.dy = -ball.dy
         end
+    end
+
+    if ball.x < 0 then
+        player2_Score = player2_Score + 1
+        ball:reset()
+        gameState = 'start'
+    end
+
+    if ball.x > VIRTUAL_WIDTH then
+        player1_Score = player1_Score + 1
+        ball:reset()
+        gamestate = 'start'
     end
 
     --[[
