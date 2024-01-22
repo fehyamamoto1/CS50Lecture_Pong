@@ -19,6 +19,56 @@ function Ball:init(x, y, width, height)
     self.dx = math.random(-50, 50)
 end
 
+function Ball:collides(paddle)
+    --[[
+        PT-BR;
+        Colisão AABB, primeiramente verificamos o eixo X.
+        Caso a posição X da bola seja maior que a posição X da raquete + sua largura, então a bola está em uma posição maior
+        que a lateral direita da raquete.
+        Caso a posição X da raquete seja maior que posição X da bola + sua largura, então a bola está em uma posição
+        menor que a lateral esquerda da raquete.
+        Dessa forma, cobrimos ambas as laterais, tanto de uma colisão pela direita quanto uma colisão pela esquerda.
+
+        EN-US;
+        AABB collision. First, verify the X axys.
+        In case the ball's X coordinate is greater than the X coordinate of paddle + width, then the ball is in a position
+        to the right side of the paddle, not colliding from this side.
+        In case the paddle's X coordinate is greater than the X coordinate of the ball + width, then the ball is in a position
+        to the left side of the paddle, not colliding from this side.
+        This way, we are covering the collision from both sides.
+    ]]
+    if self.x > paddle.x + paddle.width or paddle.x > self.x + self.width then
+        return false
+    end
+
+    --[[
+        PT-BR;
+        Similar à lógica do eixo X.
+        Se a posição Y da bola for maior que a posição Y da raquete + sua altura, a bola está abaixo da raquete
+        e não há colisão.
+        Se a posição Y da raquete for maior que a posição Y da bola + sua altura, a bola está acima da raquete
+        e não há colisão.
+
+        EN-US;
+        Similarly, if the ball's Y position is greater than paddle's Y position + height, the ball is below the paddle
+        and there's no collision.
+        If the paddle's Y position is greater than ball's Y position + height, the ball is above the paddle and there's
+        no collision.
+    ]]
+    if self.y > paddle.y + paddle.height or paddle.y > self.y + self.height then
+        return false
+    end
+
+    --[[
+        PT-BR;
+        Se nenhuma condição anterior for cumprida, significa que há colisão.
+
+        EN-US;
+        If none of the conditions was met, then collision was detected;
+    ]]
+    return true
+end
+
 function Ball:reset()
     --[[
         PT-BR;
