@@ -235,7 +235,7 @@ function love.update(dt)
     if ball.x > VIRTUAL_WIDTH then
         player1_Score = player1_Score + 1
         ball:reset()
-        gamestate = 'start'
+        gameState = 'start'
     end
 
     --[[
