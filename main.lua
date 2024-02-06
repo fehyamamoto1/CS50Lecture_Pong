@@ -19,7 +19,7 @@ WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 GAME_WINDOW_MODE_FLAGS = {
     fullscreen = false,
-    resizable = false,
+    resizable = true,
     vsync = true
 }
 
@@ -483,6 +483,10 @@ function love.draw()
 
     -- end rendering at virtual resolution
     push:apply('end')
+end
+
+function love.resize(w, h)
+    push:resize(w, h)
 end
 
 function displayFPS()
