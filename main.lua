@@ -338,7 +338,7 @@ function love.update(dt)
     ]]
     if ball.dx < 0 then
         player2.dy = 0
-    elseif ball.y == player2.y then
+    elseif Paddle.insafezone(player2, ball.y) then
         player2.dy = 0
     elseif  ball.y < player2.y + PADDLE_HEIGHT / 2 then
         --[[
@@ -349,7 +349,7 @@ function love.update(dt)
             EN;
             Add negative paddle speed to current Y scaled by dt, moves up
         ]]
-        player2.dy = -PADDLE_SPEED * defineComputerSpeed()
+        player2.dy = -PADDLE_SPEED 
     elseif ball.y > player2.y + PADDLE_HEIGHT / 2 then
          --[[
             PT-BR;
@@ -359,7 +359,7 @@ function love.update(dt)
             EN;
             Add positive paddle speed to current Y scaled by dt, moves down
         ]]
-        player2.dy = PADDLE_SPEED * defineComputerSpeed()
+        player2.dy = PADDLE_SPEED 
     else
         player2.dy = 0
     end
@@ -491,28 +491,6 @@ end
 
 function love.resize(w, h)
     push:resize(w, h)
-end
-
-function defineComputerSpeed()
-    speeds = {
-        [-3] = 0.3,
-        [-2] = 0.4,
-        [-1] = 0.5,
-        [0] = 0.52,
-        [1] = 0.54,
-        [2] = 0.56,
-        [3] = 0.58,
-        [4] = 0.8
-    }
-    score_diference = player1_Score - player2_Score
-    if score_diference < -3 then
-        return  speeds[-3]
-    elseif score_diference > 4 then
-        return speeds[4]
-    else 
-        return speeds[score_diference]
-    end
-
 end
 
 function displayFPS()

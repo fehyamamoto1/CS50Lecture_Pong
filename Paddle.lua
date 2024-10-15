@@ -1,5 +1,8 @@
 Paddle = Class{}
 
+local SAFE_ZONE_PERCENTAGE = 0.5
+
+
 function Paddle:init(x, y, width, height)
     self.x = x
     self.y = y
@@ -49,4 +52,20 @@ end
 
 function Paddle:render()
     love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
+end
+
+--[[
+    PT-BR;
+        Esse método irá calcular uma zona segura dentro da raquete para evitar comportamentos erráticos
+
+    EN;
+        This method will calculate a paddle's safe zone to avoid erratic movements
+]]
+function Paddle:insafezone(ball_y)
+    local safezone_height = self.height * SAFE_ZONE_PERCENTAGE
+    local paddle_center = self.y + self.height / 2
+
+    local safe_zone = {top = (paddle_center - safezone_height / 2) , bottom = (paddle_center + safezone_height / 2)}
+
+    return ball_y >= safe_zone.top and ball_y <= safe_zone.bottom
 end
